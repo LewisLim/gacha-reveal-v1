@@ -2,39 +2,43 @@ import { useRef, useState, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import "./App.css";
+import GachaItem from "./components/GachaItem";
 
-function RevealCube({ isRevealing }: { isRevealing: boolean }) {
-  const meshRef = useRef<THREE.Mesh>(null);
+function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
+  const groupRef = useRef<THREE.Group>(null);
   const startTimeRef = useRef<number | null>(null);
 
   useFrame((state) => {
-    if (!meshRef.current) return;
+    if (!groupRef.current) return;
 
     if (!isRevealing) {
-      startTimeRef.current = null; // clear so next reveal starts fresh
+      groupRef.current.visible = false;
+      startTimeRef.current = null;
       return;
     }
+
+    groupRef.current.visible = true;
 
     if (startTimeRef.current === null) {
       startTimeRef.current = state.clock.elapsedTime;
     }
 
     const elapsed = state.clock.elapsedTime - startTimeRef.current;
-    const duration = 3; // seconds, your call
-    const progress = Math.min(elapsed / duration, 1); // 0 to 1, clamped
-    const totalRotation = Math.PI * 2 * 1.5; // 540° in radians (1.5 full turns)
+    const duration = 3;
+    const progress = Math.min(elapsed / duration, 1);
+    const totalRotation = Math.PI * 2 * 1.5;
+    const scale = THREE.MathUtils.lerp(0.1, 1, progress);
 
-    const scale = THREE.MathUtils.lerp(0.1, 1, progress); // starts tiny, ends full size
-    meshRef.current.scale.set(scale, scale, scale);
-
-    meshRef.current.rotation.y = progress * totalRotation;
+    groupRef.current.scale.set(scale, scale, scale);
+    groupRef.current.rotation.y = progress * totalRotation;
   });
 
   return (
-    <mesh ref={meshRef}>
-      <planeGeometry />
-      <meshStandardMaterial color="silver" />
-    </mesh>
+    <group ref={groupRef}>
+      <Suspense fallback={null}>
+        <GachaItem modelPath="/prizes/a/onigiri-gold-trophy.glb" />
+      </Suspense>
+    </group>
   );
 }
 
@@ -65,11 +69,8 @@ export default function App() {
         <Canvas>
           <ambientLight intensity={0.1} />
           <directionalLight color="white" position={[0, 0, 5]} />
-          <RevealCube isRevealing={isRevealing} />
+          <RevealPrize isRevealing={isRevealing} />
           <GachaEgg isRevealing={isRevealing} />
-          {/* <Suspense fallback={null}> */}
-          {/* <GachaItem modelPath="/models/figurine-a.glb" /> */}
-          {/* </Suspense> */}
         </Canvas>
       </div>
       <button onClick={() => setIsRevealing(true)}>Open Gacha</button>
