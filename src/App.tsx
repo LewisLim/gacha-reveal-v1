@@ -12,7 +12,6 @@ import { Character } from "./components/Character";
 function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const startTimeRef = useRef<number | null>(null);
-  const deg = (d: number) => (d * Math.PI) / 180;
 
   useFrame((state) => {
     if (!groupRef.current) return;
@@ -48,25 +47,9 @@ function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
   );
 }
 
-function GachaEgg({ isRevealing }: { isRevealing: boolean }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.visible = !isRevealing;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <circleGeometry args={[2, 32]} />
-      <meshStandardMaterial color="gold" />
-    </mesh>
-  );
-}
-
 export default function App() {
   const [isRevealing, setIsRevealing] = useState(false);
+  const deg = (d: number) => (d * Math.PI) / 180;
 
   return (
     <>
@@ -76,18 +59,23 @@ export default function App() {
           <FluorescentLight />
           <CombiniScene />
           <Character
-            modelPath="/people/combini-worker-1.glb"
+            modelPath="/people/worker-1.glb"
             position={[-0.8, -1, 2.7]}
-            rotation={[0, 89.5, 0]}
+            rotation={[0, deg(90), 0]}
           />
           <Character
             modelPath="/people/player-male.glb"
             position={[1, -1, 2.7]}
-            rotation={[0, -89.5, 0]}
+            rotation={[0, deg(-90), 0]}
+          />
+          <Character
+            modelPath="/people/cat-1.glb"
+            position={[-1.6, -1, 3.3]}
+            rotation={[0, deg(240), 0]}
+            scale={0.4}
           />
 
           <RevealPrize isRevealing={isRevealing} />
-          {/* <GachaEgg isRevealing={isRevealing} /> */}
         </Canvas>
         <GachaConfetti isRevealing={isRevealing} tier={"S"} />
       </div>
