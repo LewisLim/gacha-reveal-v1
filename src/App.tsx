@@ -1,12 +1,11 @@
-// App.tsx
 import "./App.css";
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { GachaConfetti } from "./special-effects/GachaConfetti";
+import { GachaConfetti } from "./components/effects/GachaConfetti";
 import { CombiniScene } from "./components/scenes/CombiniScene";
 import { StreetScene } from "./components/scenes/StreetScene";
-
-type Scene = "combini" | "street" | "temple";
+import SceneControls from "./components/ui/SceneControls";
+import SceneToggle, { type Scene } from "./components/ui/SceneToggle";
 
 export default function App() {
   const [scene, setScene] = useState<Scene>("combini");
@@ -25,58 +24,12 @@ export default function App() {
           )}
           {scene === "street" && <StreetScene />}
         </Canvas>
-
         <GachaConfetti
           isRevealing={scene === "combini" && isRevealing}
           tier="S"
         />
-
-        <div
-          style={{ position: "absolute", top: 20, left: 0, right: 20 }}
-          className="flex flex-col w-22 ms-auto space-y-2 border border-teal-600 p-2"
-        >
-          <h2 className="text-center text-xs text-gray-800">Move To</h2>
-          <button
-            onClick={() => setScene("combini")}
-            className="bg-teal-500 hover:bg-teal-400 text-white text-xs font-medium p-2 rounded-sm cursor-pointer"
-          >
-            Combini
-          </button>
-          <button
-            onClick={() => setScene("street")}
-            className="bg-teal-500 hover:bg-teal-400 text-white text-xs font-medium p-2 rounded-sm cursor-pointer"
-          >
-            Street
-          </button>
-          <button
-            onClick={() => setScene("temple")}
-            className="bg-teal-500 hover:bg-teal-400 text-white text-xs font-medium p-2 rounded-sm cursor-pointer"
-          >
-            Temple
-          </button>
-        </div>
-
-        <div
-          style={{ position: "absolute", bottom: 20, left: 0, right: 0 }}
-          className="flex justify-center space-x-4"
-        >
-          {scene === "combini" && (
-            <button
-              onClick={() => setIsRevealing(true)}
-              className="bg-teal-500 hover:bg-teal-400 text-white text-sm font-medium py-2 px-4 rounded-full cursor-pointer"
-            >
-              Open Gacha
-            </button>
-          )}
-          {scene === "combini" && (
-            <button
-              onClick={() => setIsRevealing(false)}
-              className="bg-transparent hover:bg-teal-500 text-teal-400 text-sm font-medium hover:text-white py-2 px-4 border border-teal-500 hover:border-transparent rounded cursor-pointer"
-            >
-              Reset
-            </button>
-          )}
-        </div>
+        <SceneToggle scene={scene} setScene={setScene} />
+        <SceneControls scene={scene} setIsRevealing={setIsRevealing} />
       </div>
     </div>
   );
