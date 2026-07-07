@@ -47,11 +47,9 @@ function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
 
 interface Props {
   isRevealing: boolean;
-  setIsRevealing: (value: boolean) => void;
-  onOpen: () => void;
 }
 
-export function CombiniScene({ isRevealing, setIsRevealing, onOpen }: Props) {
+export function CombiniScene({ isRevealing }: Props) {
   const { scene } = useGLTF("/scene/combini-scene.glb");
 
   return (

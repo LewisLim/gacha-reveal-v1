@@ -15,13 +15,7 @@ export default function App() {
     <div style={{ position: "relative" }}>
       <div id="canvas-container" className="h-[700px]">
         <Canvas>
-          {scene === "combini" && (
-            <CombiniScene
-              isRevealing={isRevealing}
-              setIsRevealing={setIsRevealing}
-              onOpen={() => setScene("combini")}
-            />
-          )}
+          {scene === "combini" && <CombiniScene isRevealing={isRevealing} />}
           {scene === "street" && <StreetScene />}
         </Canvas>
         <GachaConfetti
