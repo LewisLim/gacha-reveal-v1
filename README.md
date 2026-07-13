@@ -2,6 +2,8 @@
 
 A 3D gacha-machine reveal built with React Three Fiber. Click "Open Gacha" to spin a random prize on a convenience-store set, with tier-based confetti (SS/S/A).
 
+Demo: [Link](https://LewisLim.github.io/gacha-reveal-v1/)
+
 ## Stack
 
 React 19 · TypeScript · Vite · Three.js · @react-three/fiber + drei · Tailwind

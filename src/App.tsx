@@ -21,7 +21,7 @@ function CameraAim() {
 }
 
 export default function App() {
-  const [scene, setScene] = useState<"combini">("combini");
+  const [scene] = useState<"combini">("combini");
   const [isRevealing, setIsRevealing] = useState(false);
   const [prize, setPrize] = useState(PRIZES[0]);
   const [revealKey, setRevealKey] = useState(0);
