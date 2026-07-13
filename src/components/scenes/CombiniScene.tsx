@@ -6,12 +6,24 @@ import GachaItem from "../GachaItem";
 import { FluorescentLight } from "../FluorescentLight";
 import { Character } from "../Character";
 import { SceneItem } from "./SceneItem";
+import type { Prize } from "../../data/prizes";
+import { DEFAULT_PRIZE_TRANSFORM } from "../../data/prizes";
 
 const deg = (d: number) => (d * Math.PI) / 180;
 
-function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
+function RevealPrize({
+  isRevealing,
+  prize,
+}: {
+  isRevealing: boolean;
+  prize: Prize;
+}) {
   const groupRef = useRef<THREE.Group>(null);
   const startTimeRef = useRef<number | null>(null);
+
+  const position = prize.transform?.position ?? DEFAULT_PRIZE_TRANSFORM.position;
+  const rotation = prize.transform?.rotation ?? DEFAULT_PRIZE_TRANSFORM.rotation;
+  const scale = prize.transform?.scale ?? DEFAULT_PRIZE_TRANSFORM.scale;
 
   useFrame((state) => {
     if (!groupRef.current) return;
@@ -30,16 +42,19 @@ function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
 
     const elapsed = state.clock.elapsedTime - startTimeRef.current;
     const progress = Math.min(elapsed / 1, 1);
-    const scale = 0.4;
 
-    groupRef.current.scale.set(scale, scale, scale);
-    groupRef.current.rotation.y = progress * (Math.PI * 2 * 0.5);
+    groupRef.current.scale.setScalar(scale);
+    groupRef.current.rotation.set(
+      rotation[0],
+      rotation[1] + progress * (Math.PI * 2 * 0.5),
+      rotation[2],
+    );
   });
 
   return (
-    <group ref={groupRef} position={[0.4, -0.5, 3]} rotation={[0.3, 0, 0]}>
+    <group ref={groupRef} position={position}>
       <Suspense fallback={null}>
-        <GachaItem modelPath="/prizes/a/onigiri-gold-trophy.glb" />
+        <GachaItem modelPath={prize.modelPath} />
       </Suspense>
     </group>
   );
@@ -47,9 +62,10 @@ function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
 
 interface Props {
   isRevealing: boolean;
+  prize: Prize;
 }
 
-export function CombiniScene({ isRevealing }: Props) {
+export function CombiniScene({ isRevealing, prize }: Props) {
   const { scene } = useGLTF("/scene/combini-scene.glb");
 
   return (
@@ -84,7 +100,7 @@ export function CombiniScene({ isRevealing }: Props) {
         rotation={[0, deg(240), 0]}
         scale={0.4}
       />
-      <RevealPrize isRevealing={isRevealing} />
+      <RevealPrize isRevealing={isRevealing} prize={prize} />
     </>
   );
 }

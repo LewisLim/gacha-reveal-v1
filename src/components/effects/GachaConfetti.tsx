@@ -2,7 +2,7 @@ import { useWindowSize } from "react-use";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 
-type Tier = "S" | "A" | "B" | "C";
+type Tier = "SS" | "S" | "A" | "B" | "C" | "D" | "E";
 
 interface Props {
   isRevealing: boolean;
@@ -20,6 +20,8 @@ export function GachaConfetti({ isRevealing, tier }: Props) {
     A: ["#9B59B6", "#6C3483", "#D7BDE2", "#FFFFFF"],
     B: ["#F39C12", "#E67E22", "#FAD7A0", "#FFFFFF"],
     C: ["#2ECC71", "#27AE60", "#A9DFBF", "#FFFFFF"],
+    D: ["#3498DB", "#2980B9", "#AED6F1", "#FFFFFF"],
+    E: ["#95A5A6", "#7F8C8D", "#D5D8DC", "#FFFFFF"],
   };
 
   const colors = tierColors[tier] || tierColors.C;
