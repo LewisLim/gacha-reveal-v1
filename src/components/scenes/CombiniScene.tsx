@@ -63,9 +63,10 @@ function RevealPrize({
 interface Props {
   isRevealing: boolean;
   prize: Prize;
+  revealKey: number;
 }
 
-export function CombiniScene({ isRevealing, prize }: Props) {
+export function CombiniScene({ isRevealing, prize, revealKey }: Props) {
   const { scene } = useGLTF("/scene/combini-scene.glb");
 
   return (
@@ -100,7 +101,7 @@ export function CombiniScene({ isRevealing, prize }: Props) {
         rotation={[0, deg(240), 0]}
         scale={0.4}
       />
-      <RevealPrize isRevealing={isRevealing} prize={prize} />
+      <RevealPrize key={revealKey} isRevealing={isRevealing} prize={prize} />
     </>
   );
 }

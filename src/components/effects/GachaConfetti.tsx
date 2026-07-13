@@ -4,6 +4,8 @@ import Confetti from "react-confetti";
 
 type Tier = "SS" | "S" | "A" | "B" | "C" | "D" | "E";
 
+const CONFETTI_TIERS: Tier[] = ["SS", "S", "A"];
+
 interface Props {
   isRevealing: boolean;
   tier: Tier;
@@ -27,14 +29,14 @@ export function GachaConfetti({ isRevealing, tier }: Props) {
   const colors = tierColors[tier] || tierColors.C;
 
   useEffect(() => {
-    if (isRevealing) {
+    if (isRevealing && CONFETTI_TIERS.includes(tier)) {
       // Slight delay so light hits first
       const t = setTimeout(() => setShow(true), 300);
       return () => clearTimeout(t);
     } else {
       setShow(false);
     }
-  }, [isRevealing]);
+  }, [isRevealing, tier]);
 
   if (!show) return null;
 
