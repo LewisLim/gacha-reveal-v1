@@ -8,6 +8,7 @@ import { Character } from "../Character";
 import { SceneItem } from "./SceneItem";
 import type { Prize } from "../../data/prizes";
 import { DEFAULT_PRIZE_TRANSFORM } from "../../data/prizes";
+import { assetPath } from "../../utils/assetPath";
 
 const deg = (d: number) => (d * Math.PI) / 180;
 
@@ -67,7 +68,7 @@ interface Props {
 }
 
 export function CombiniScene({ isRevealing, prize, revealKey }: Props) {
-  const { scene } = useGLTF("/scene/combini-scene.glb");
+  const { scene } = useGLTF(assetPath("/scene/combini-scene.glb"));
 
   return (
     <>

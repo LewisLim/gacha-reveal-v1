@@ -1,4 +1,5 @@
 import { useGLTF } from '@react-three/drei'
+import { assetPath } from '../utils/assetPath'
 
 interface Props {
   modelPath: string
@@ -8,7 +9,7 @@ interface Props {
 }
 
 export function Character({ modelPath, position = [0, 0, 0], rotation = [0, 0, 0], scale = 1 }: Props) {
-  const { scene } = useGLTF(modelPath)
+  const { scene } = useGLTF(assetPath(modelPath))
   
   return (
     <primitive
